@@ -1,9 +1,54 @@
 @if(toy()) {
-<ul>
-    <li>ID: {{toy()?.toyId}}</li>
-    <li>Naziv: {{toy()?.name}}</li>
-    <li>Tip: {{toy()?.type?.name}}</li>
-    <li>Uzrast: {{toy()?.ageGroup?.name}}</li>
-    <li>Cena: {{toy()?.price}} RSD</li>
-</ul>
+<div class="details-wrapper">
+    <mat-card class="details-card">
+        <mat-card-content>
+            <img [src]="utils.getImageUrl(toy()!)" class="details-img">
+        </mat-card-content>
+    </mat-card>
+    <mat-card class="details-card">
+        <mat-card-content>
+            <h1>{{toy()?.name}}</h1>
+            <mat-list>
+                <mat-list-item>
+                    <mat-icon matListItemIcon>category</mat-icon>
+                    <div matListItemTitle>Tip</div>
+                    <div matListItemLine>{{toy()?.type?.name}}</div>
+                </mat-list-item>
+                <mat-list-item>
+                    <mat-icon matListItemIcon>cake</mat-icon>
+                    <div matListItemTitle>Uzrast</div>
+                    <div matListItemLine>{{toy()?.ageGroup?.name}}</div>
+                </mat-list-item>
+                <mat-list-item>
+                    <mat-icon matListItemIcon>group</mat-icon>
+                    <div matListItemTitle>Ciljna grupa</div>
+                    <div matListItemLine>{{toy()?.targetGroup}}</div>
+                </mat-list-item>
+                <mat-list-item>
+                    <mat-icon matListItemIcon>payments</mat-icon>
+                    <div matListItemTitle>Cena</div>
+                    <div matListItemLine>{{toy()?.price}} RSD</div>
+                </mat-list-item>
+                <mat-list-item>
+                    <mat-icon matListItemIcon>calendar_month</mat-icon>
+                    <div matListItemTitle>Datum proizvodnje</div>
+                    <div matListItemLine>{{utils.formatDate(toy()!.productionDate)}}</div>
+                </mat-list-item>
+                <mat-list-item>
+                    <mat-icon matListItemIcon>description</mat-icon>
+                    <div matListItemTitle>Opis</div>
+                    <div matListItemLine>{{toy()?.description}}</div>
+                </mat-list-item>
+            </mat-list>
+        </mat-card-content>
+    </mat-card>
+</div>
+} @else {
+<mat-card class="loading-card">
+    <img src="/loading.webp" class="loading-img">
+    <mat-card-content>
+        <h3>Podaci se učitavaju</h3>
+        <p>Molimo sačekajte...</p>
+    </mat-card-content>
+</mat-card>
 }
