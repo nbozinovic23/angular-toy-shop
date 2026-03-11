@@ -1,1 +1,29 @@
-<p>home works!</p>
+@if(toys().length > 0) {
+<div class="card-wrapper">
+    @for (t of toys(); track $index){
+    <mat-card class="toy-card" appearance="outlined">
+        <img mat-card-image [src]="utils.getImageUrl(t)" [alt]="t.name">
+        <mat-card-content class="card-content">
+            <mat-card-title>
+                <strong>{{t.name}}</strong>
+            </mat-card-title>
+            <mat-card-subtitle>{{t.type.name}} | {{t.ageGroup.name}} god.</mat-card-subtitle>
+        </mat-card-content>
+        <mat-card-actions>
+            <a [routerLink]="'/details/' + t.toyId" matButton>
+                <mat-icon fontIcon="description" /> Detalji
+            </a>
+        </mat-card-actions>
+    </mat-card>
+    }
+</div>
+}
+@else {
+<mat-card class="loading-card">
+    <img src="/loading.webp" class="loading-img">
+    <mat-card-content>
+        <h3>Podaci se ucitavaju</h3>
+        <p>Molimo sacekajte...</p>
+    </mat-card-content>
+</mat-card>
+}
