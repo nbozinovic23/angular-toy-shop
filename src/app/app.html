@@ -9,7 +9,7 @@
   <a routerLink="/about" matButton>
     <mat-icon fontIcon="info" /> About
   </a>
-  @if(activeUser) {
+  @if(authService.getActiveUser()) {
   <a routerLink="/user" matButton>
     <mat-icon fontIcon="admin_panel_settings" /> Account
   </a>

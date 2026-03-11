@@ -41,6 +41,13 @@
                 </mat-list-item>
             </mat-list>
         </mat-card-content>
+        @if(authService.getActiveUser()){
+        <mat-card-actions>
+            <a [routerLink]="'/details/' + toy()?.toyId + '/reserve'" matButton>
+                <mat-icon fontIcon="add_shopping_cart" /> Rezerviši
+            </a>
+        </mat-card-actions>
+        }
     </mat-card>
 </div>
 } @else {
