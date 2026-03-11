@@ -1,1 +1,37 @@
-<p>user works!</p>
+<mat-card class="small-card">
+    <mat-card-header>
+        <h1>User Details</h1>
+    </mat-card-header>
+    <mat-card-content>
+        <div>
+            <mat-form-field class="full-width">
+                <mat-label>First Name</mat-label>
+                <input matInput type="text" [(ngModel)]="activeUser!.firstName">
+            </mat-form-field>
+            <mat-form-field class="full-width">
+                <mat-label>Last Name</mat-label>
+                <input matInput type="text" [(ngModel)]="activeUser!.lastName">
+            </mat-form-field>
+            <mat-form-field class="full-width">
+                <mat-label>Email</mat-label>
+                <input matInput type="email" [(ngModel)]="activeUser!.email">
+            </mat-form-field>
+            <mat-form-field class="full-width">
+                <mat-label>Address</mat-label>
+                <input matInput type="text" [(ngModel)]="activeUser!.address">
+            </mat-form-field>
+            <mat-form-field class="full-width">
+                <mat-label>Phone Number</mat-label>
+                <input matInput type="text" [(ngModel)]="activeUser!.phone">
+            </mat-form-field>
+            <mat-form-field class="full-width">
+                <mat-label>Favorite types of toys</mat-label>
+                <mat-select [(ngModel)]="activeUser!.favoriteToyTypes" multiple>
+                    @for (type of toyTypes(); track type) {
+                        <mat-option [value]="type">{{type}}</mat-option>
+                    }
+                </mat-select>
+            </mat-form-field>
+        </div>
+    </mat-card-content>
+</mat-card>
