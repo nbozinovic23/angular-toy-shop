@@ -9,6 +9,18 @@
   <a routerLink="/about" matButton>
     <mat-icon fontIcon="info" /> About
   </a>
+  @if(activeUser) {
+  <a routerLink="/user" matButton>
+    <mat-icon fontIcon="admin_panel_settings" /> Account
+  </a>
+  <button matButton (click)="doLogout()">
+    <mat-icon fontIcon="logout" /> Logout
+  </button>
+  } @else {
+  <a routerLink="/login" matButton>
+    <mat-icon fontIcon="login" /> Login
+  </a>
+  }
 </mat-toolbar>
 <div class="wrapper">
   <router-outlet />
