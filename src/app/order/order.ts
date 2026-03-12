@@ -8,7 +8,6 @@ import { Loading } from '../loading/loading';
 import { MatListModule } from '@angular/material/list';
 import { MatIconModule } from '@angular/material/icon';
 import { ToyModel } from '../../models/toy.model';
-import { CartItemModel } from '../../models/cart-item.model';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Utils } from '../utils';
 import { AuthService } from '../../services/auth.service';
@@ -62,10 +61,9 @@ export class Order {
   }
 
   placeOrder() {
-    Alerts.confirm('Da li ste sigurni da želite da rezervišete ovu igračku?', () => {
-      AuthService.addToCart({ quantity: this.quantity() }, this.toy()!.toyId)
-      Alerts.success('Igračka je uspešno rezervisana!')
-      this.router.navigate(['/'])
+    Alerts.confirm(`Da li ste sigurni da želite da rezervišete ${this.quantity()} komada za ${this.calculateTotal()} RSD?`, () => {
+      AuthService.addToCart({ quantity: this.quantity(), totalPrice: this.calculateTotal() }, this.toy()!.toyId)
+      this.router.navigate(['/cart'])
     })
   }
 }

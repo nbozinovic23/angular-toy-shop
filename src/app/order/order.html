@@ -29,10 +29,15 @@
                     <div matListItemTitle>Cena po komadu</div>
                     <div matListItemLine>{{toy()!.price}} RSD</div>
                 </mat-list-item>
+                <mat-list-item>
+                    <mat-icon matListItemIcon>calendar_month</mat-icon>
+                    <div matListItemTitle>Datum proizvodnje</div>
+                    <div matListItemLine>{{utils.formatDate(toy()!.productionDate)}}</div>
+                </mat-list-item>
             </mat-list>
         </mat-card-content>
     </mat-card>
-    <mat-card class="flex-card" appearance="outlined">
+    <mat-card class="flex-card order-form-card" appearance="outlined">
         <mat-card-content>
             <div class="no-wrap">
                 <mat-form-field class="full-width">
@@ -44,9 +49,11 @@
                 </button>
             </div>
             <h3>Ukupno: {{calculateTotal()}} RSD</h3>
-            <button matButton type="button" (click)="placeOrder()">
-                <mat-icon fontIcon="add_shopping_cart" /> Rezerviši
-            </button>
+            <mat-card-actions>
+                <button matButton type="button" (click)="placeOrder()">
+                    <mat-icon fontIcon="add_shopping_cart" /> Rezerviši
+                </button>
+            </mat-card-actions>
         </mat-card-content>
     </mat-card>
 </div>
