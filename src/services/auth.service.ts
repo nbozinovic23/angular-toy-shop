@@ -46,6 +46,20 @@ export class AuthService {
         return null
     }
 
+    static updateActiveUser(newUserData: UserModel) {
+        const users = this.getUsers()
+        for (let u of users) {
+            if (u.email === localStorage.getItem(ACTIVE)) {
+                u.firstName = newUserData.firstName
+                u.lastName = newUserData.lastName
+                u.address = newUserData.address
+                u.phone = newUserData.phone
+                u.favoriteToyTypes = newUserData.favoriteToyTypes
+            }
+        }
+        localStorage.setItem(USERS, JSON.stringify(users))
+    }
+
     static logout() {
         localStorage.removeItem(ACTIVE)
     }

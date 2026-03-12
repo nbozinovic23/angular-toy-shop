@@ -5,16 +5,16 @@
     <mat-card-content>
         <div>
             <mat-form-field class="full-width">
+                <mat-label>Email</mat-label>
+                <input matInput type="email" [(ngModel)]="activeUser!.email" disabled>
+            </mat-form-field>
+            <mat-form-field class="full-width">
                 <mat-label>First Name</mat-label>
                 <input matInput type="text" [(ngModel)]="activeUser!.firstName">
             </mat-form-field>
             <mat-form-field class="full-width">
                 <mat-label>Last Name</mat-label>
                 <input matInput type="text" [(ngModel)]="activeUser!.lastName">
-            </mat-form-field>
-            <mat-form-field class="full-width">
-                <mat-label>Email</mat-label>
-                <input matInput type="email" [(ngModel)]="activeUser!.email">
             </mat-form-field>
             <mat-form-field class="full-width">
                 <mat-label>Address</mat-label>
@@ -34,4 +34,9 @@
             </mat-form-field>
         </div>
     </mat-card-content>
+    <mat-card-actions>
+        <button type="button" matButton (click)="updateUser()">
+            <mat-icon fontIcon="save" /> Save Changes
+        </button>
+    </mat-card-actions>
 </mat-card>

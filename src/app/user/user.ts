@@ -35,4 +35,8 @@ export class User {
     axios.get('https://toy.pequla.com/api/type')
       .then(rsp => this.toyTypes.set(rsp.data.map((t: any) => t.name)))
   }
+
+  updateUser() {
+    AuthService.updateActiveUser(this.activeUser!)
+  }
 }
