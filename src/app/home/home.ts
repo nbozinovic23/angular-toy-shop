@@ -1,5 +1,4 @@
 import { Component, signal } from '@angular/core';
-import axios from 'axios';
 import { ToyModel } from '../../models/toy.model';
 import { RouterLink } from "@angular/router";
 import { MatButtonModule } from '@angular/material/button';
@@ -7,6 +6,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { Utils } from '../utils';
 import { AuthService } from '../../services/auth.service';
+import { ToyService } from '../../services/toy.service';
 
 
 @Component({
@@ -20,7 +20,7 @@ export class Home {
   toys = signal<ToyModel[]>([])
 
   constructor(public utils: Utils) {
-    axios.get<ToyModel[]>('https://toy.pequla.com/api/toy')
+    ToyService.getToys()
       .then(rsp => {
         this.toys.set(rsp.data)
       })

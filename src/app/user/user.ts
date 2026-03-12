@@ -7,7 +7,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
-import axios from 'axios';
+import { ToyService } from '../../services/toy.service';
 
 @Component({
   selector: 'app-user',
@@ -32,11 +32,12 @@ export class User {
       return
     }
 
-    axios.get('https://toy.pequla.com/api/type')
+    ToyService.getToyTypes()
       .then(rsp => this.toyTypes.set(rsp.data.map((t: any) => t.name)))
   }
 
   updateUser() {
     AuthService.updateActiveUser(this.activeUser!)
+    alert('User updated successfully')
   }
 }
