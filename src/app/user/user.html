@@ -7,10 +7,6 @@
         <mat-card-content>
             <div>
                 <mat-form-field class="full-width">
-                    <mat-label>Email</mat-label>
-                    <input matInput type="email" [(ngModel)]="activeUser!.email" disabled>
-                </mat-form-field>
-                <mat-form-field class="full-width">
                     <mat-label>First Name</mat-label>
                     <input matInput type="text" [(ngModel)]="activeUser!.firstName">
                 </mat-form-field>
@@ -30,7 +26,7 @@
                     <mat-label>Favorite types of toys</mat-label>
                     <mat-select [(ngModel)]="activeUser!.favoriteToyTypes" multiple>
                         @for (type of toyTypes(); track type) {
-                            <mat-option [value]="type">{{type}}</mat-option>
+                        <mat-option [value]="type">{{type}}</mat-option>
                         }
                     </mat-select>
                 </mat-form-field>
@@ -81,7 +77,31 @@
             </mat-card-actions>
         </mat-card>
     </div>
+    <mat-card class="user-card">
+        <mat-card-header>
+            <h1>Preporučene igračke</h1>
+        </mat-card-header>
+        <mat-card-content>
+            <mat-list>
+                @for(t of recommended(); track $index) {
+                <mat-list-item>
+                    <mat-icon matListItemIcon>toys</mat-icon>
+                    <div matListItemTitle>{{t.name}}</div>
+                    <div matListItemLine>{{t.type.name}} | {{t.price}} RSD</div>
+                    <a [routerLink]="'/details/' + t.toyId" matButton>Detalji</a>
+                </mat-list-item>
+                }
+                @if(recommended().length === 0) {
+                <mat-list-item>
+                    <mat-icon matListItemIcon>info</mat-icon>
+                    <div matListItemTitle>Nema preporuka</div>
+                    <div matListItemLine>Odaberite omiljene vrste igračaka</div>
+                </mat-list-item>
+                }
+            </mat-list>
+        </mat-card-content>
+    </mat-card>
 </div>
 } @else {
-<app-loading />
+    <app-loading />
 }

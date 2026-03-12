@@ -27,4 +27,8 @@ export class ToyService {
     static async getToyTypes() {
         return await client.get<ToyTypeModel[]>('/type')
     }
+
+    static async getToysByType(typeName: string) {
+        return await client.post<ToyModel[]>('/toy/list', { typeName })
+    }
 }
