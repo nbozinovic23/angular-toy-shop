@@ -42,35 +42,45 @@ export class User {
       .then(rsp => this.toyTypes.set(rsp.data.map((t: any) => t.name)))
   }
 
+  getAvatarUrl() {
+    return `https://ui-avatars.com/api/?name=${this.activeUser?.firstName}+${this.activeUser?.lastName}`
+  }
+
   updateUser() {
-    AuthService.updateActiveUser(this.activeUser!)
-    Alerts.success('User updated successfully')
+    Alerts.confirm('Are you sure you want to update user info?',
+      () => {
+        AuthService.updateActiveUser(this.activeUser!)
+        Alerts.success('User updated successfully')
+      })
   }
 
   updatePassword() {
-    if (this.oldPassword != this.activeUser?.password) {
-      Alerts.error('Invalid old password')
-      return
-    }
+    Alerts.confirm('Are you sure you want to change the password?',
+      () => {
+        if (this.oldPassword != this.activeUser?.password) {
+          Alerts.error('Invalid old password')
+          return
+        }
 
-    if (this.newPassword.length < 6) {
-      Alerts.error('Password must be at least 6 characters long')
-      return
-    }
+        if (this.newPassword.length < 6) {
+          Alerts.error('Password must be at least 6 characters long')
+          return
+        }
 
-    if (this.newPassword != this.passRepeat) {
-      Alerts.error('Password don\'t match')
-      return
-    }
+        if (this.newPassword != this.passRepeat) {
+          Alerts.error('Password don\'t match')
+          return
+        }
 
-    if (this.newPassword == this.activeUser?.password) {
-      Alerts.error('New password can\'t be the same as the old one')
-      return
-    }
+        if (this.newPassword == this.activeUser?.password) {
+          Alerts.error('New password can\'t be the same as the old one')
+          return
+        }
 
-    AuthService.updateActiveUserPassword(this.newPassword)
-    Alerts.success('Password updated successfully')
-    AuthService.logout()
-    this.router.navigate(['/login'])
-  }
+        AuthService.updateActiveUserPassword(this.newPassword)
+        Alerts.success('Password updated successfully')
+        AuthService.logout()
+        this.router.navigate(['/login'])
+      }
+    )}
 }
