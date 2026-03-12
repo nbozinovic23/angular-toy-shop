@@ -8,6 +8,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { AuthService } from '../../services/auth.service';
 import { ToyService } from '../../services/toy.service';
+import { Loading } from '../loading/loading';
 
 @Component({
   selector: 'app-details',
@@ -16,7 +17,8 @@ import { ToyService } from '../../services/toy.service';
     MatListModule,
     MatIconModule,
     MatButtonModule,
-    RouterLink
+    RouterLink,
+    Loading
   ],
   templateUrl: './details.html',
   styleUrl: './details.css',

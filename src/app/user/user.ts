@@ -8,6 +8,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { ToyService } from '../../services/toy.service';
+import { Loading } from '../loading/loading';
 
 @Component({
   selector: 'app-user',
@@ -17,7 +18,8 @@ import { ToyService } from '../../services/toy.service';
     MatButtonModule,
     MatIconModule,
     FormsModule,
-    MatSelectModule
+    MatSelectModule,
+    Loading
   ],
   templateUrl: './user.html',
   styleUrl: './user.css',

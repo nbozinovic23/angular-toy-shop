@@ -1,3 +1,4 @@
+@if(toyTypes().length > 0) {
 <mat-card class="small-card">
     <mat-card-header>
         <h1>User Details</h1>
@@ -40,3 +41,6 @@
         </button>
     </mat-card-actions>
 </mat-card>
+} @else {
+<app-loading />
+}
