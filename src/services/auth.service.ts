@@ -1,3 +1,4 @@
+import { CartItemModel } from "../models/cart-item.model"
 import { UserModel } from "../models/user.model"
 
 const USERS = 'users'
@@ -72,5 +73,19 @@ export class AuthService {
 
     static logout() {
         localStorage.removeItem(ACTIVE)
+    }
+
+    static addToCart(item: Partial<CartItemModel>, toyId: number) {
+        item.toyId = toyId
+        item.status = 'rezervisano'
+        item.createdAt = new Date().toISOString()
+
+        const users = this.getUsers()
+        for (let u of users) {
+            if (u.email === localStorage.getItem(ACTIVE)) {
+                u.cart.push(item as CartItemModel)
+            }
+        }
+        localStorage.setItem(USERS, JSON.stringify(users))
     }
 }

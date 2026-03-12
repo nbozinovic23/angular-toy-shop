@@ -1,1 +1,55 @@
-<p>order works!</p>
+@if(toy() != null) {
+<div class="flex-wrapper">
+    <mat-card class="flex-card" appearance="outlined">
+        <img mat-card-image [src]="utils.getImageUrl(toy()!)" [alt]="toy()?.name">
+        <mat-card-content>
+            <mat-list>
+                <mat-list-item>
+                    <mat-icon matListItemIcon>toys</mat-icon>
+                    <div matListItemTitle>Naziv</div>
+                    <div matListItemLine>{{toy()!.name}}</div>
+                </mat-list-item>
+                <mat-list-item>
+                    <mat-icon matListItemIcon>category</mat-icon>
+                    <div matListItemTitle>Tip</div>
+                    <div matListItemLine>{{toy()!.type.name}}</div>
+                </mat-list-item>
+                <mat-list-item>
+                    <mat-icon matListItemIcon>cake</mat-icon>
+                    <div matListItemTitle>Uzrast</div>
+                    <div matListItemLine>{{toy()!.ageGroup.name}} god.</div>
+                </mat-list-item>
+                <mat-list-item>
+                    <mat-icon matListItemIcon>group</mat-icon>
+                    <div matListItemTitle>Ciljna grupa</div>
+                    <div matListItemLine>{{toy()!.targetGroup}}</div>
+                </mat-list-item>
+                <mat-list-item>
+                    <mat-icon matListItemIcon>payments</mat-icon>
+                    <div matListItemTitle>Cena po komadu</div>
+                    <div matListItemLine>{{toy()!.price}} RSD</div>
+                </mat-list-item>
+            </mat-list>
+        </mat-card-content>
+    </mat-card>
+    <mat-card class="flex-card" appearance="outlined">
+        <mat-card-content>
+            <div class="no-wrap">
+                <mat-form-field class="full-width">
+                    <mat-label>Količina</mat-label>
+                    <input matInput type="number" [(ngModel)]="inputQuantity" min="1">
+                </mat-form-field>
+                <button matButton type="button" (click)="applyQuantity()">
+                    <mat-icon fontIcon="check" />
+                </button>
+            </div>
+            <h3>Ukupno: {{calculateTotal()}} RSD</h3>
+            <button matButton type="button" (click)="placeOrder()">
+                <mat-icon fontIcon="add_shopping_cart" /> Rezerviši
+            </button>
+        </mat-card-content>
+    </mat-card>
+</div>
+} @else {
+<app-loading />
+}
