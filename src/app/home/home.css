@@ -1,12 +1,23 @@
-.toy-card {
-    width: 240px;
+.home-wrapper {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+}
+
+.filter-card {
+    width: 260px;
+    flex-shrink: 0;
 }
 
 .card-wrapper {
     display: flex;
-    justify-content: center;
     flex-wrap: wrap;
-    gap: 5px;
+    gap: 12px;
+    flex: 1;
+}
+
+.toy-card {
+    width: 220px;
 }
 
 .card-content {
