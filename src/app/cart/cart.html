@@ -1,1 +1,7 @@
-<p>cart works!</p>
+@for (item of getCartItems(); track $index) {
+    <mat-card>
+        <mat-card-content>
+            {{item.toyId}} - {{item.quantity}} kom - {{item.totalPrice}} RSD - {{item.status}}
+        </mat-card-content>
+    </mat-card>
+}

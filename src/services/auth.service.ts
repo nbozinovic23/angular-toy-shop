@@ -90,4 +90,14 @@ export class AuthService {
         }
         localStorage.setItem(USERS, JSON.stringify(users))
     }
+
+    static getCartItems() {
+        const users = this.getUsers()
+        for (let u of users) {
+            if (u.email === localStorage.getItem(ACTIVE)) {
+                return u.cart
+            }
+        }
+        return []
+    }
 }
