@@ -1,0 +1,10 @@
+mat-card-header h1 {
+    width: 100%;
+    text-align: center;
+}
+
+mat-card-actions {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+}
