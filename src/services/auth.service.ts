@@ -100,4 +100,42 @@ export class AuthService {
         }
         return []
     }
+
+    static getCartByStatus(status: 'rezervisano' | 'pristiglo' | 'otkazano') {
+        const users = this.getUsers()
+        for (let u of users) {
+            if (u.email === localStorage.getItem(ACTIVE)) {
+                return u.cart.filter(i => i.status === status)
+            }
+        }
+        return []
+    }
+
+    static cancelCartItem(createdAt: string) {
+        const users = this.getUsers()
+        for (let u of users) {
+            if (u.email === localStorage.getItem(ACTIVE)) {
+                for (let i of u.cart) {
+                    if (i.status === 'rezervisano' && i.createdAt === createdAt) {
+                        i.status = 'otkazano'
+                    }
+                }
+            }
+        }
+        localStorage.setItem(USERS, JSON.stringify(users))
+    }
+
+    static payCartItem() {
+        const users = this.getUsers()
+        for (let u of users) {
+            if (u.email === localStorage.getItem(ACTIVE)) {
+                for (let i of u.cart) {
+                    if (i.status === 'rezervisano') {
+                        i.status = 'pristiglo'
+                    }
+                }
+            }
+        }
+        localStorage.setItem(USERS, JSON.stringify(users))
+    }
 }

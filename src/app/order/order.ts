@@ -13,6 +13,7 @@ import { Utils } from '../utils';
 import { AuthService } from '../../services/auth.service';
 import { ToyService } from '../../services/toy.service';
 import { Alerts } from '../alerts';
+import { CartItemModel } from '../../models/cart-item.model';
 
 @Component({
   selector: 'app-order',
@@ -32,8 +33,10 @@ import { Alerts } from '../alerts';
 })
 export class Order {
   toy = signal<ToyModel | null>(null)
-  quantity = signal(1)
-  inputQuantity = 1
+
+  item: Partial<CartItemModel> = {
+    quantity: 1
+  }
 
   constructor(private route: ActivatedRoute, private router: Router, public utils: Utils) {
     if (!AuthService.getActiveUser()) {
@@ -48,21 +51,13 @@ export class Order {
     })
   }
 
-  applyQuantity() {
-    if (this.inputQuantity < 1) {
-      Alerts.error('Količina mora biti najmanje 1')
-      return
-    }
-    this.quantity.set(this.inputQuantity)
-  }
-
   calculateTotal() {
-    return (this.toy()?.price ?? 0) * this.quantity()
+    return (this.toy()?.price ?? 0) * (this.item.quantity ?? 1)
   }
 
   placeOrder() {
-    Alerts.confirm(`Da li ste sigurni da želite da rezervišete ${this.quantity()} komada za ${this.calculateTotal()} RSD?`, () => {
-      AuthService.addToCart({ quantity: this.quantity(), totalPrice: this.calculateTotal() }, this.toy()!.toyId)
+    Alerts.confirm(`Da li ste sigurni da želite da rezervišete ${this.item.quantity} komada za ${this.calculateTotal()} RSD?`, () => {
+      AuthService.addToCart({ quantity: this.item.quantity, totalPrice: this.calculateTotal() }, this.toy()!.toyId)
       this.router.navigate(['/cart'])
     })
   }

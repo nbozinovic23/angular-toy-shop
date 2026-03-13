@@ -1,7 +1,129 @@
-@for (item of getCartItems(); track $index) {
-    <mat-card>
-        <mat-card-content>
-            {{item.toyId}} - {{item.quantity}} kom - {{item.totalPrice}} RSD - {{item.status}}
-        </mat-card-content>
-    </mat-card>
+<mat-card class="mb-3">
+    <mat-card-header>
+        <h1>Rezervisane igračke</h1>
+    </mat-card-header>
+    @if(getRezervisano().length > 0) {
+    <mat-card-content>
+        <div class="table-wrapper">
+            <table mat-table [dataSource]="getRezervisano()" class="mat-elevation-z8">
+                <ng-container matColumnDef="naziv">
+                    <th mat-header-cell *matHeaderCellDef>Naziv</th>
+                    <td mat-cell *matCellDef="let item" class="truncate-cell">{{getToy(item.toyId)?.name ?? '...'}}</td>
+                </ng-container>
+                <ng-container matColumnDef="cenaPoKomadu">
+                    <th mat-header-cell *matHeaderCellDef>Cena/kom</th>
+                    <td mat-cell *matCellDef="let item">{{getToy(item.toyId)?.price ?? '...'}} RSD</td>
+                </ng-container>
+                <ng-container matColumnDef="kolicina">
+                    <th mat-header-cell *matHeaderCellDef>Količina</th>
+                    <td mat-cell *matCellDef="let item">{{item.quantity}}</td>
+                </ng-container>
+                <ng-container matColumnDef="ukupnaCena">
+                    <th mat-header-cell *matHeaderCellDef>Ukupno</th>
+                    <td mat-cell *matCellDef="let item">{{item.totalPrice}} RSD</td>
+                </ng-container>
+                <ng-container matColumnDef="datum">
+                    <th mat-header-cell *matHeaderCellDef>Datum rezervacije</th>
+                    <td mat-cell *matCellDef="let item">{{item.createdAt}}</td>
+                </ng-container>
+                <ng-container matColumnDef="opcije">
+                    <th mat-header-cell *matHeaderCellDef>Opcije</th>
+                    <td mat-cell *matCellDef="let item">
+                        <button type="button" matButton (click)="showDetails(item)">
+                            <mat-icon fontIcon="info" /> Detalji
+                        </button>
+                        <a [routerLink]="'/details/' + item.toyId" matButton>
+                            <mat-icon fontIcon="storefront" /> Stranica
+                        </a>
+                        <button type="button" matButton (click)="cancelItem(item)">
+                            <mat-icon fontIcon="cancel" /> Otkaži
+                        </button>
+                    </td>
+                </ng-container>
+                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+            </table>
+        </div>
+    </mat-card-content>
+    <div class="cart-footer">
+        <h3>Ukupno: {{calculateTotal()}} RSD</h3>
+        <button type="button" matButton (click)="payAll()">
+            <mat-icon fontIcon="payments" /> Plati sve
+        </button>
+    </div>
+    } @else {
+    <mat-card-content>Nema rezervisanih igračaka</mat-card-content>
+    }
+</mat-card>
+
+@if(getPristiglo().length > 0) {
+<mat-card class="mb-3">
+    <mat-card-header>
+        <h1>Pristigle igračke</h1>
+    </mat-card-header>
+    <mat-card-content>
+        <div class="table-wrapper">
+            <table mat-table [dataSource]="getPristiglo()" class="mat-elevation-z8">
+                <ng-container matColumnDef="naziv">
+                    <th mat-header-cell *matHeaderCellDef>Naziv</th>
+                    <td mat-cell *matCellDef="let item" class="truncate-cell">{{getToy(item.toyId)?.name ?? '...'}}</td>
+                </ng-container>
+                <ng-container matColumnDef="cenaPoKomadu">
+                    <th mat-header-cell *matHeaderCellDef>Cena/kom</th>
+                    <td mat-cell *matCellDef="let item">{{getToy(item.toyId)?.price ?? '...'}} RSD</td>
+                </ng-container>
+                <ng-container matColumnDef="kolicina">
+                    <th mat-header-cell *matHeaderCellDef>Količina</th>
+                    <td mat-cell *matCellDef="let item">{{item.quantity}}</td>
+                </ng-container>
+                <ng-container matColumnDef="ukupnaCena">
+                    <th mat-header-cell *matHeaderCellDef>Ukupno</th>
+                    <td mat-cell *matCellDef="let item">{{item.totalPrice}} RSD</td>
+                </ng-container>
+                <ng-container matColumnDef="datum">
+                    <th mat-header-cell *matHeaderCellDef>Datum rezervacije</th>
+                    <td mat-cell *matCellDef="let item">{{item.createdAt}}</td>
+                </ng-container>
+                <tr mat-header-row *matHeaderRowDef="infoColumns"></tr>
+                <tr mat-row *matRowDef="let row; columns: infoColumns;" (click)="showDetails(row)" class="clickable-row"></tr>
+            </table>
+        </div>
+    </mat-card-content>
+</mat-card>
+}
+
+@if(getOtkazano().length > 0) {
+<mat-card class="mb-3">
+    <mat-card-header>
+        <h1>Otkazane igračke</h1>
+    </mat-card-header>
+    <mat-card-content>
+        <div class="table-wrapper">
+            <table mat-table [dataSource]="getOtkazano()" class="mat-elevation-z8">
+                <ng-container matColumnDef="naziv">
+                    <th mat-header-cell *matHeaderCellDef>Naziv</th>
+                    <td mat-cell *matCellDef="let item" class="truncate-cell">{{getToy(item.toyId)?.name ?? '...'}}</td>
+                </ng-container>
+                <ng-container matColumnDef="cenaPoKomadu">
+                    <th mat-header-cell *matHeaderCellDef>Cena/kom</th>
+                    <td mat-cell *matCellDef="let item">{{getToy(item.toyId)?.price ?? '...'}} RSD</td>
+                </ng-container>
+                <ng-container matColumnDef="kolicina">
+                    <th mat-header-cell *matHeaderCellDef>Količina</th>
+                    <td mat-cell *matCellDef="let item">{{item.quantity}}</td>
+                </ng-container>
+                <ng-container matColumnDef="ukupnaCena">
+                    <th mat-header-cell *matHeaderCellDef>Ukupno</th>
+                    <td mat-cell *matCellDef="let item">{{item.totalPrice}} RSD</td>
+                </ng-container>
+                <ng-container matColumnDef="datum">
+                    <th mat-header-cell *matHeaderCellDef>Datum rezervacije</th>
+                    <td mat-cell *matCellDef="let item">{{item.createdAt}}</td>
+                </ng-container>
+                <tr mat-header-row *matHeaderRowDef="infoColumns"></tr>
+                <tr mat-row *matRowDef="let row; columns: infoColumns;" (click)="showDetails(row)" class="clickable-row"></tr>
+            </table>
+        </div>
+    </mat-card-content>
+</mat-card>
 }

@@ -1,0 +1,40 @@
+.table-scroll {
+    overflow-x: auto;
+    width: 100%;
+}
+
+.truncate-cell {
+    max-width: 150px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.clickable-row {
+    cursor: pointer;
+}
+
+.clickable-row:hover {
+    background-color: rgba(0, 0, 0, 0.04);
+}
+
+.mat-column-naziv,
+.mat-column-cenaPoKomadu,
+.mat-column-kolicina,
+.mat-column-ukupnaCena,
+.mat-column-datum,
+.mat-column-opcije {
+    text-align: center !important;
+}
+
+th.mat-header-cell {
+    text-align: center !important;
+}
+
+.cart-footer {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 16px;
+    padding: 8px 16px;
+}

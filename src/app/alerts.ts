@@ -43,4 +43,14 @@ export class Alerts {
             }
         })
     }
+
+    static toyDetails(title: string, html: string) {
+        Swal.fire({
+            title,
+            html,
+            icon: 'info',
+            confirmButtonText: 'Zatvori',
+            customClass: matCustomClass
+        })
+    }
 }

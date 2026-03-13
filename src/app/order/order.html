@@ -39,22 +39,17 @@
     </mat-card>
     <mat-card class="flex-card order-form-card" appearance="outlined">
         <mat-card-content>
-            <div class="no-wrap">
-                <mat-form-field class="full-width">
-                    <mat-label>Količina</mat-label>
-                    <input matInput type="number" [(ngModel)]="inputQuantity" min="1">
-                </mat-form-field>
-                <button matButton type="button" (click)="applyQuantity()">
-                    <mat-icon fontIcon="check" />
-                </button>
-            </div>
+            <mat-form-field class="full-width">
+                <mat-label>Količina</mat-label>
+                <input matInput type="number" [(ngModel)]="item.quantity" min="1">
+            </mat-form-field>
             <h3>Ukupno: {{calculateTotal()}} RSD</h3>
-            <mat-card-actions>
-                <button matButton type="button" (click)="placeOrder()">
-                    <mat-icon fontIcon="add_shopping_cart" /> Rezerviši
-                </button>
-            </mat-card-actions>
         </mat-card-content>
+        <mat-card-actions>
+            <button matButton type="button" (click)="placeOrder()">
+                <mat-icon fontIcon="add_shopping_cart" /> Rezerviši
+            </button>
+        </mat-card-actions>
     </mat-card>
 </div>
 } @else {
