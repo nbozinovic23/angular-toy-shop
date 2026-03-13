@@ -1,6 +1,6 @@
-import Swal from "sweetalert2"
+import Swal from "sweetalert2";
 
-const matCustomClass = {
+export const matCustomClass = {
     popup: 'mat-swal-popup',
     title: 'mat-swal-title',
     actions: 'mat-swal-actions',
@@ -27,8 +27,8 @@ export class Alerts {
         })
     }
 
-    static confirm(text: string, callback: Function) {
-        Swal.fire({
+    static async confirm(text: string, callback: Function) {
+        const result = await Swal.fire({
             title: "Are you sure?",
             text,
             icon: "question",
@@ -37,11 +37,11 @@ export class Alerts {
             cancelButtonColor: "#d33",
             confirmButtonText: "Yes",
             customClass: matCustomClass
-        }).then((result) => {
-            if (result.isConfirmed) {
-                callback()
-            }
         })
+
+        if (result.isConfirmed) {
+            await callback()
+        }
     }
 
     static toyDetails(title: string, html: string) {
