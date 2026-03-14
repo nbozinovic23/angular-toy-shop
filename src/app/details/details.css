@@ -13,3 +13,14 @@
 .details-img {
     max-width: 100%;
 }
+
+mat-card-actions {
+    display: flex;
+    justify-content: flex-end;
+}
+
+@media screen and (max-width: 640px) {
+    .details-card {
+        width: 100%;
+    }
+}

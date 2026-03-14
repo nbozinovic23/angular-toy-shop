@@ -20,6 +20,7 @@ import { AuthService } from '../services/auth.service';
   styleUrl: './app.css'
 })
 export class App {
+  year = new Date().getFullYear()
   public authService = AuthService
 
   constructor(private router: Router) {}

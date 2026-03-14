@@ -1,14 +1,14 @@
 @if(toy() != null) {
-<div class="flex-wrapper">
-    <mat-card class="flex-card" appearance="outlined">
-        <img mat-card-image [src]="utils.getImageUrl(toy()!)" [alt]="toy()?.name">
+<div class="order-wrapper">
+    <mat-card class="order-card" appearance="outlined">
         <mat-card-content>
+            <img [src]="utils.getImageUrl(toy()!)" class="order-img" [alt]="toy()!.name">
+        </mat-card-content>
+    </mat-card>
+    <mat-card class="order-card" appearance="outlined">
+        <mat-card-content>
+            <h1>{{toy()!.name}}</h1>
             <mat-list>
-                <mat-list-item>
-                    <mat-icon matListItemIcon>toys</mat-icon>
-                    <div matListItemTitle>Naziv</div>
-                    <div matListItemLine>{{toy()!.name}}</div>
-                </mat-list-item>
                 <mat-list-item>
                     <mat-icon matListItemIcon>category</mat-icon>
                     <div matListItemTitle>Tip</div>
@@ -34,17 +34,20 @@
                     <div matListItemTitle>Datum proizvodnje</div>
                     <div matListItemLine>{{utils.formatDate(toy()!.productionDate)}}</div>
                 </mat-list-item>
+                <mat-list-item>
+                    <mat-icon matListItemIcon>description</mat-icon>
+                    <div matListItemTitle>Opis</div>
+                    <div matListItemLine>{{toy()!.description}}</div>
+                </mat-list-item>
             </mat-list>
         </mat-card-content>
-    </mat-card>
-    <mat-card class="flex-card order-form-card" appearance="outlined">
-        <mat-card-content>
-            <mat-form-field class="full-width">
+        <div class="order-form">
+            <mat-form-field>
                 <mat-label>Količina</mat-label>
                 <input matInput type="number" [(ngModel)]="item.quantity" min="1">
             </mat-form-field>
             <h3>Ukupno: {{calculateTotal()}} RSD</h3>
-        </mat-card-content>
+        </div>
         <mat-card-actions>
             <button matButton type="button" (click)="placeOrder()">
                 <mat-icon fontIcon="add_shopping_cart" /> Rezerviši

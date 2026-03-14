@@ -1,12 +1,5 @@
 .user-card {
-    width: 360px;
-}
-
-.user-wrapper {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-    justify-content: center;
+    width: 340px;
 }
 
 .user-details {
@@ -14,9 +7,6 @@
 }
 
 .user-info {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
     justify-content: start;
 }
 
