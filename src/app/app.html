@@ -3,27 +3,61 @@
     <strong>Prodavnica Igračaka</strong>
   </span>
   <span class="spacer"></span>
-  <a routerLink="/" matButton>
-    <mat-icon fontIcon="home" /> Home
-  </a>
-  <a routerLink="/about" matButton>
-    <mat-icon fontIcon="info" /> About
-  </a>
-  @if(authService.getActiveUser()) {
-  <a routerLink="/cart" matButton>
-    <mat-icon fontIcon="shopping_cart" /> Korpa
-  </a>
-  <a routerLink="/user" matButton>
-    <mat-icon fontIcon="admin_panel_settings" /> Account
-  </a>
-  <button matButton (click)="doLogout()">
-    <mat-icon fontIcon="logout" /> Logout
-  </button>
-  } @else {
-  <a routerLink="/login" matButton>
-    <mat-icon fontIcon="login" /> Login
-  </a>
-  }
+
+  <!-- Desktop Navigation -->
+  <div class="desktop-nav">
+    <a routerLink="/" matButton>
+      <mat-icon fontIcon="home" /> Home
+    </a>
+    <a routerLink="/about" matButton>
+      <mat-icon fontIcon="info" /> About
+    </a>
+    @if(authService.getActiveUser()) {
+    <a routerLink="/cart" matButton>
+      <mat-icon fontIcon="shopping_cart" /> Korpa
+    </a>
+    <a routerLink="/user" matButton>
+      <mat-icon fontIcon="admin_panel_settings" /> Account
+    </a>
+    <button matButton (click)="doLogout()">
+      <mat-icon fontIcon="logout" /> Logout
+    </button>
+    } @else {
+    <a routerLink="/login" matButton>
+      <mat-icon fontIcon="login" /> Login
+    </a>
+    }
+  </div>
+
+  <!-- Mobile Navigation -->
+  <div class="mobile-nav">
+    <button matIconButton [matMenuTriggerFor]="menu">
+      <mat-icon>more_vert</mat-icon>
+    </button>
+    <mat-menu #menu="matMenu">
+      <a routerLink="/" mat-menu-item>
+        <mat-icon fontIcon="home" /> Home
+      </a>
+      <a routerLink="/about" mat-menu-item>
+        <mat-icon fontIcon="info" /> About
+      </a>
+      @if(authService.getActiveUser()) {
+      <a routerLink="/cart" mat-menu-item>
+        <mat-icon fontIcon="shopping_cart" /> Korpa
+      </a>
+      <a routerLink="/user" mat-menu-item>
+        <mat-icon fontIcon="admin_panel_settings" /> Account
+      </a>
+      <button mat-menu-item (click)="doLogout()">
+        <mat-icon fontIcon="logout" /> Logout
+      </button>
+      } @else {
+      <a routerLink="/login" mat-menu-item>
+        <mat-icon fontIcon="login" /> Login
+      </a>
+      }
+    </mat-menu>
+  </div>
 </mat-toolbar>
 <div class="wrapper">
   <router-outlet />

@@ -21,7 +21,8 @@
 }
 
 .flex-card {
-    width: 460px;
+    min-width: 340px;
+    max-width: 460px;
 }
 
 .mat-swal-popup {
