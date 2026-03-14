@@ -41,13 +41,40 @@
                 </mat-list-item>
             </mat-list>
         </mat-card-content>
-        @if(authService.getActiveUser()){
+        @if(authService.getActiveUser()) {
         <mat-card-actions>
             <a [routerLink]="'/details/' + toy()?.toyId + '/reserve'" matButton>
                 <mat-icon fontIcon="add_shopping_cart" /> Rezerviši
             </a>
         </mat-card-actions>
         }
+    </mat-card>
+</div>
+
+<div class="details-wrapper">
+    <mat-card class="details-card details-reviews">
+        <mat-card-header>
+            <h2>Recenzije ({{reviews().length}})</h2>
+        </mat-card-header>
+        <mat-card-content>
+            @if(reviews().length > 0) {
+            <mat-list>
+                @for(review of reviews(); track $index) {
+                <mat-list-item class="review-item">
+                    <mat-icon matListItemIcon>person</mat-icon>
+                    <div matListItemTitle>
+                        {{review.userEmail}}
+                        <span class="review-stars">{{getStars(review.rating)}}</span>
+                    </div>
+                    <div matListItemLine>{{review.comment}}</div>
+                    <div matListItemLine class="review-date">{{review.createdAt}}</div>
+                </mat-list-item>
+                }
+            </mat-list>
+            } @else {
+            <p class="no-reviews">Još nema recenzija za ovu igračku.</p>
+            }
+        </mat-card-content>
     </mat-card>
 </div>
 } @else {

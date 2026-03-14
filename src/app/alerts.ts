@@ -53,4 +53,77 @@ export class Alerts {
             customClass: matCustomClass
         })
     }
+
+    static async rateItem(toyName: string, callback: (rating: number, comment: string) => void) {
+        const { value, isConfirmed } = await Swal.fire({
+            title: `Ocenite: ${toyName}`,
+            html: `
+                <div style="margin-bottom: 12px;">
+                    <label style="display: block; margin-bottom: 6px; font-weight: 500;">Ocena:</label>
+                    <div id="star-container" style="display: flex; justify-content: center; gap: 8px; font-size: 32px; cursor: pointer;">
+                        <span class="star" data-value="1">☆</span>
+                        <span class="star" data-value="2">☆</span>
+                        <span class="star" data-value="3">☆</span>
+                        <span class="star" data-value="4">☆</span>
+                        <span class="star" data-value="5">☆</span>
+                    </div>
+                    <input type="hidden" id="rating-value" value="0">
+                </div>
+                <div>
+                    <label style="display: block; margin-bottom: 6px; font-weight: 500;">Komentar:</label>
+                    <textarea id="review-comment" rows="3" placeholder="Napišite recenziju..." 
+                        style="width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px; font-family: inherit; font-size: 14px; box-sizing: border-box;"></textarea>
+                </div>
+            `,
+            showCancelButton: true,
+            confirmButtonText: 'Potvrdi',
+            cancelButtonText: 'Otkaži',
+            customClass: matCustomClass,
+            didOpen: () => {
+                const stars = document.querySelectorAll('.star')
+                const ratingInput = document.getElementById('rating-value') as HTMLInputElement
+
+                stars.forEach(star => {
+                    star.addEventListener('click', () => {
+                        const value = Number(star.getAttribute('data-value'))
+                        ratingInput.value = String(value)
+                        stars.forEach(s => {
+                            s.textContent = Number(s.getAttribute('data-value')) <= value ? '★' : '☆'
+                        })
+                    })
+
+                    star.addEventListener('mouseover', () => {
+                        const value = Number(star.getAttribute('data-value'))
+                        stars.forEach(s => {
+                            s.textContent = Number(s.getAttribute('data-value')) <= value ? '★' : '☆'
+                        })
+                    })
+
+                    star.addEventListener('mouseout', () => {
+                        const current = Number((document.getElementById('rating-value') as HTMLInputElement).value)
+                        stars.forEach(s => {
+                            s.textContent = Number(s.getAttribute('data-value')) <= current ? '★' : '☆'
+                        })
+                    })
+                })
+            },
+            preConfirm: () => {
+                const rating = Number((document.getElementById('rating-value') as HTMLInputElement).value)
+                const comment = (document.getElementById('review-comment') as HTMLTextAreaElement).value.trim()
+                if (rating === 0) {
+                    Swal.showValidationMessage('Morate odabrati ocenu!')
+                    return false
+                }
+                if (comment === '') {
+                    Swal.showValidationMessage('Morate uneti komentar!')
+                    return false
+                }
+                return { rating, comment }
+            }
+        })
+
+        if (isConfirmed && value) {
+            callback(value.rating, value.comment)
+        }
+    }
 }

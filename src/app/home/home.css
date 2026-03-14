@@ -7,6 +7,16 @@
 
 .toy-card {
     width: 240px;
+    display: flex;
+    flex-direction: column;
+}
+
+.toy-card mat-card-content {
+    flex: 1;
+}
+
+.toy-card mat-card-actions {
+    margin-top: auto;
 }
 
 .card-content {

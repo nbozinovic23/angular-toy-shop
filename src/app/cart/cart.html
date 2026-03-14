@@ -1,11 +1,11 @@
 <mat-card class="mb-10">
     <mat-card-header>
-        <h1>Rezervisane igračke</h1>
+        <h1>Moja korpa</h1>
     </mat-card-header>
-    @if(getRezervisano().length > 0) {
+    @if(getActiveCart().length > 0) {
     <mat-card-content>
         <div class="table-scroll">
-            <table mat-table [dataSource]="getRezervisano()" class="mat-elevation-z8">
+            <table mat-table [dataSource]="getActiveCart()" class="mat-elevation-z8">
                 <ng-container matColumnDef="naziv">
                     <th mat-header-cell *matHeaderCellDef>Naziv</th>
                     <td mat-cell *matCellDef="let item" class="truncate-cell">{{getToy(item.toyId)?.name ?? '...'}}</td>
@@ -23,7 +23,7 @@
                     <td mat-cell *matCellDef="let item">{{item.totalPrice}} RSD</td>
                 </ng-container>
                 <ng-container matColumnDef="datum">
-                    <th mat-header-cell *matHeaderCellDef>Datum rezervacije</th>
+                    <th mat-header-cell *matHeaderCellDef>Datum dodavanja</th>
                     <td mat-cell *matCellDef="let item">{{item.createdAt}}</td>
                 </ng-container>
                 <ng-container matColumnDef="opcije">
@@ -35,35 +35,44 @@
                         <a [routerLink]="'/details/' + item.toyId" matButton>
                             <mat-icon fontIcon="storefront" /> Stranica
                         </a>
-                        <button type="button" matButton (click)="cancelItem(item)">
-                            <mat-icon fontIcon="cancel" /> Otkaži
+                        <button type="button" matButton (click)="removeFromCart(item)">
+                            <mat-icon fontIcon="delete" /> Ukloni
                         </button>
                     </td>
                 </ng-container>
-                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                <tr mat-header-row *matHeaderRowDef="activeCartColumns"></tr>
+                <tr mat-row *matRowDef="let row; columns: activeCartColumns;"></tr>
             </table>
         </div>
         <div class="cart-footer">
-            <h3>Ukupno: {{calculateTotal()}} RSD</h3>
+            <h3>Ukupno: {{calculateActiveTotal()}} RSD</h3>
+            <button type="button" matButton (click)="cancelActiveCart()">
+                <mat-icon fontIcon="cancel" /> Otkaži sve
+            </button>
             <button type="button" matButton (click)="payAll()">
-                <mat-icon fontIcon="payments" /> Plati sve
+                <mat-icon fontIcon="payments" /> Poruči sve
             </button>
         </div>
     </mat-card-content>
     } @else {
-    <mat-card-content>Nema rezervisanih igračaka</mat-card-content>
+    <mat-card-content>Korpa je prazna</mat-card-content>
     }
 </mat-card>
 
-@if(getPristiglo().length > 0) {
+@if(getOrderGroups().length > 0) {
+<mat-card-header>
+    <h1>Pristigle porudžbine</h1>
+</mat-card-header>
+}
+
+@for(group of getOrderGroups(); track group[0]) {
 <mat-card class="mb-10">
     <mat-card-header>
-        <h1>Pristigle igračke</h1>
+        <h2>Porudžbina #{{group[0]}}</h2>
     </mat-card-header>
     <mat-card-content>
         <div class="table-scroll">
-            <table mat-table [dataSource]="getPristiglo()" class="mat-elevation-z8">
+            <table mat-table [dataSource]="group[1]" class="mat-elevation-z8">
                 <ng-container matColumnDef="naziv">
                     <th mat-header-cell *matHeaderCellDef>Naziv</th>
                     <td mat-cell *matCellDef="let item" class="truncate-cell">{{getToy(item.toyId)?.name ?? '...'}}</td>
@@ -81,8 +90,12 @@
                     <td mat-cell *matCellDef="let item">{{item.totalPrice}} RSD</td>
                 </ng-container>
                 <ng-container matColumnDef="datum">
-                    <th mat-header-cell *matHeaderCellDef>Datum rezervacije</th>
+                    <th mat-header-cell *matHeaderCellDef>Datum porudžbine</th>
                     <td mat-cell *matCellDef="let item">{{item.createdAt}}</td>
+                </ng-container>
+                <ng-container matColumnDef="ocena">
+                    <th mat-header-cell *matHeaderCellDef>Ocena</th>
+                    <td mat-cell *matCellDef="let item">{{getStars(item.rating)}}</td>
                 </ng-container>
                 <ng-container matColumnDef="opcije">
                     <th mat-header-cell *matHeaderCellDef>Opcije</th>
@@ -93,11 +106,19 @@
                         <a [routerLink]="'/details/' + item.toyId" matButton>
                             <mat-icon fontIcon="storefront" /> Stranica
                         </a>
+                        @if(item.rating == null) {
+                        <button type="button" matButton (click)="rateItem(item)">
+                            <mat-icon fontIcon="star" /> Oceni
+                        </button>
+                        }
                     </td>
                 </ng-container>
                 <tr mat-header-row *matHeaderRowDef="infoColumns"></tr>
                 <tr mat-row *matRowDef="let row; columns: infoColumns;"></tr>
             </table>
+        </div>
+        <div class="cart-footer">
+            <h3>Ukupno za porudžbinu: {{calculateGroupTotal(group[1])}} RSD</h3>
         </div>
     </mat-card-content>
 </mat-card>
@@ -142,8 +163,8 @@
                         </a>
                     </td>
                 </ng-container>
-                <tr mat-header-row *matHeaderRowDef="infoColumns"></tr>
-                <tr mat-row *matRowDef="let row; columns: infoColumns;"></tr>
+                <tr mat-header-row *matHeaderRowDef="otkazanoColumns"></tr>
+                <tr mat-row *matRowDef="let row; columns: otkazanoColumns;"></tr>
             </table>
         </div>
     </mat-card-content>

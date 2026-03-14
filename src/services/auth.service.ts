@@ -32,7 +32,6 @@ export class AuthService {
                 return true
             }
         }
-
         return false
     }
 
@@ -43,7 +42,6 @@ export class AuthService {
                 return u
             }
         }
-
         return null
     }
 
@@ -75,16 +73,23 @@ export class AuthService {
         localStorage.removeItem(ACTIVE)
     }
 
+    static generateOrderId(): string {
+        return Date.now().toString(36) + Math.random().toString(36).substring(2, 6).toUpperCase()
+    }
+
     static addToCart(item: Partial<CartItemModel>, toyId: number) {
-        item.toyId = toyId
-        item.status = 'rezervisano'
-        item.rating = null
         const now = new Date()
-        item.createdAt = `${now.getDate().toString().padStart(2, '0')}.${(now.getMonth() + 1).toString().padStart(2, '0')}.${now.getFullYear()}. ${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}:${now.getSeconds().toString().padStart(2, '0')}`
+        const createdAt = `${now.getDate().toString().padStart(2, '0')}.${(now.getMonth() + 1).toString().padStart(2, '0')}.${now.getFullYear()}. ${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}:${now.getSeconds().toString().padStart(2, '0')}`
 
         const users = this.getUsers()
         for (let u of users) {
             if (u.email === localStorage.getItem(ACTIVE)) {
+                item.toyId = toyId
+                item.orderId = null
+                item.status = 'rezervisano'
+                item.rating = null
+                item.review = null
+                item.createdAt = createdAt
                 u.cart.push(item as CartItemModel)
             }
         }
@@ -101,7 +106,17 @@ export class AuthService {
         return []
     }
 
-    static getCartByStatus(status: 'rezervisano' | 'pristiglo' | 'otkazano') {
+    static getActiveCartItems() {
+        const users = this.getUsers()
+        for (let u of users) {
+            if (u.email === localStorage.getItem(ACTIVE)) {
+                return u.cart.filter(i => i.status === 'rezervisano' && i.orderId === null)
+            }
+        }
+        return []
+    }
+
+    static getCartByStatus(status: 'pristiglo' | 'otkazano') {
         const users = this.getUsers()
         for (let u of users) {
             if (u.email === localStorage.getItem(ACTIVE)) {
@@ -111,12 +126,50 @@ export class AuthService {
         return []
     }
 
-    static cancelCartItem(createdAt: string) {
+    static getOrderGroups(): Map<string, CartItemModel[]> {
+        const items = this.getCartByStatus('pristiglo')
+        const groups = new Map<string, CartItemModel[]>()
+        for (let item of items) {
+            if (!groups.has(item.orderId!)) {
+                groups.set(item.orderId!, [])
+            }
+            groups.get(item.orderId!)!.push(item)
+        }
+        return groups
+    }
+
+    static removeFromActiveCart(createdAt: string, toyId: number) {
+        const users = this.getUsers()
+        for (let u of users) {
+            if (u.email === localStorage.getItem(ACTIVE)) {
+                u.cart = u.cart.filter(i => !(i.orderId === null && i.createdAt === createdAt && i.toyId === toyId))
+            }
+        }
+        localStorage.setItem(USERS, JSON.stringify(users))
+    }
+
+    static payActiveCart() {
+        const orderId = this.generateOrderId()
         const users = this.getUsers()
         for (let u of users) {
             if (u.email === localStorage.getItem(ACTIVE)) {
                 for (let i of u.cart) {
-                    if (i.status === 'rezervisano' && i.createdAt === createdAt) {
+                    if (i.status === 'rezervisano' && i.orderId === null) {
+                        i.status = 'pristiglo'
+                        i.orderId = orderId
+                    }
+                }
+            }
+        }
+        localStorage.setItem(USERS, JSON.stringify(users))
+    }
+
+    static cancelActiveCart() {
+        const users = this.getUsers()
+        for (let u of users) {
+            if (u.email === localStorage.getItem(ACTIVE)) {
+                for (let i of u.cart) {
+                    if (i.status === 'rezervisano' && i.orderId === null) {
                         i.status = 'otkazano'
                     }
                 }
@@ -125,18 +178,39 @@ export class AuthService {
         localStorage.setItem(USERS, JSON.stringify(users))
     }
 
-    static payCartItem() {
+    static rateCartItem(createdAt: string, toyId: number, rating: number, comment: string) {
         const users = this.getUsers()
+        const now = new Date()
+        const reviewDate = `${now.getDate().toString().padStart(2, '0')}.${(now.getMonth() + 1).toString().padStart(2, '0')}.${now.getFullYear()}.`
         for (let u of users) {
             if (u.email === localStorage.getItem(ACTIVE)) {
                 for (let i of u.cart) {
-                    if (i.status === 'rezervisano') {
-                        i.status = 'pristiglo'
+                    if (i.createdAt === createdAt && i.toyId === toyId && i.status === 'pristiglo') {
+                        i.rating = rating
+                        i.review = {
+                            userEmail: u.email,
+                            rating,
+                            comment,
+                            createdAt: reviewDate
+                        }
                     }
                 }
             }
         }
         localStorage.setItem(USERS, JSON.stringify(users))
+    }
+
+    static getReviewsForToy(toyId: number): import('../models/cart-item.model').ReviewModel[] {
+        const users = this.getUsers()
+        const reviews = []
+        for (let u of users) {
+            for (let i of u.cart) {
+                if (i.toyId === toyId && i.review != null) {
+                    reviews.push(i.review)
+                }
+            }
+        }
+        return reviews
     }
 
     static createUser(user: Partial<UserModel>) {

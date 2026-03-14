@@ -8,3 +8,8 @@ mat-card-actions {
     justify-content: center;
     gap: 8px;
 }
+
+mat-card {
+    margin-left: auto;
+    margin-right: auto;
+}

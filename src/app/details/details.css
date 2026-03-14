@@ -19,6 +19,32 @@ mat-card-actions {
     justify-content: flex-end;
 }
 
+.details-reviews {
+    width: 1130px;
+    max-width: 100%;
+}
+
+.review-stars {
+    margin-left: 8px;
+    color: orange;
+}
+
+.review-item {
+    height: auto !important;
+    padding: 8px 0;
+}
+
+.review-date {
+    font-size: 12px;
+    opacity: 0.6;
+}
+
+.no-reviews {
+    opacity: 0.6;
+    font-style: italic;
+    padding: 8px 0;
+}
+
 @media screen and (max-width: 640px) {
     .details-card {
         width: 100%;

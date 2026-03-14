@@ -56,9 +56,9 @@ export class Order {
   }
 
   placeOrder() {
-    Alerts.confirm(`Da li ste sigurni da želite da rezervišete ${this.item.quantity} komada za ${this.calculateTotal()} RSD?`, () => {
-      AuthService.addToCart({ quantity: this.item.quantity, totalPrice: this.calculateTotal() }, this.toy()!.toyId)
-      this.router.navigate(['/cart'])
+    Alerts.confirm(`Da li ste sigurni da želite da dodate ${this.item.quantity} komada u korpu za ${this.calculateTotal()} RSD?`, () => {
+        AuthService.addToCart({ quantity: this.item.quantity, totalPrice: this.calculateTotal() }, this.toy()!.toyId)
+        this.router.navigate(['/cart'])
     })
   }
 }
