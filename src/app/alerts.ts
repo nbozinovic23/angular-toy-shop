@@ -54,6 +54,44 @@ export class Alerts {
         })
     }
 
+    static async editCartItem(toyName: string, currentQuantity: number, pricePerItem: number, callback: (quantity: number, totalPrice: number) => void) {
+        const { value, isConfirmed } = await Swal.fire({
+            title: `Izmeni količinu: ${toyName}`,
+            html: `
+                <div style="margin-bottom: 12px;">
+                    <label style="display: block; margin-bottom: 6px; font-weight: 500;">Količina:</label>
+                    <input id="edit-quantity" type="number" min="1" value="${currentQuantity}"
+                        style="width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px; font-family: inherit; font-size: 14px; box-sizing: border-box;">
+                </div>
+                <p id="edit-total" style="text-align: right; font-weight: 500;">Ukupno: ${currentQuantity * pricePerItem} RSD</p>
+            `,
+            showCancelButton: true,
+            confirmButtonText: 'Sačuvaj',
+            cancelButtonText: 'Otkaži',
+            customClass: matCustomClass,
+            didOpen: () => {
+                const input = document.getElementById('edit-quantity') as HTMLInputElement
+                const total = document.getElementById('edit-total') as HTMLParagraphElement
+                input.addEventListener('input', () => {
+                    const q = Math.max(1, Number(input.value) || 1)
+                    total.textContent = `Ukupno: ${q * pricePerItem} RSD`
+                })
+            },
+            preConfirm: () => {
+                const quantity = Math.max(1, Number((document.getElementById('edit-quantity') as HTMLInputElement).value) || 1)
+                if (quantity < 1) {
+                    Swal.showValidationMessage('Količina mora biti najmanje 1!')
+                    return false
+                }
+                return { quantity, totalPrice: quantity * pricePerItem }
+            }
+        })
+
+        if (isConfirmed && value) {
+            callback(value.quantity, value.totalPrice)
+        }
+    }
+
     static async rateItem(toyName: string, callback: (rating: number, comment: string) => void) {
         const { value, isConfirmed } = await Swal.fire({
             title: `Ocenite: ${toyName}`,

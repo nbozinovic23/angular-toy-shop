@@ -1,37 +1,68 @@
 @if(toys().length > 0) {
-<div class="search-wrapper">
-    <mat-form-field>
-        <mat-label>Pretraga</mat-label>
-        <input matInput type="text" [(ngModel)]="search" (keyup)="filter()">
-    </mat-form-field>
-    <mat-form-field>
-        <mat-label>Tip igračke</mat-label>
-        <mat-select [(ngModel)]="selectedType" (ngModelChange)="filter()">
-            <mat-option value="">Svi tipovi</mat-option>
-            @for (type of toyTypes(); track type.typeId) {
-            <mat-option [value]="type.name">{{type.name}}</mat-option>
-            }
-        </mat-select>
-    </mat-form-field>
-    <mat-form-field>
-        <mat-label>Uzrasna grupa</mat-label>
-        <mat-select [(ngModel)]="selectedAgeGroup" (ngModelChange)="filter()">
-            <mat-option value="">Sve uzrasne grupe</mat-option>
-            @for (ag of ageGroups(); track ag.ageGroupId) {
-            <mat-option [value]="ag.name">{{ag.name}}</mat-option>
-            }
-        </mat-select>
-    </mat-form-field>
-    <mat-form-field>
-        <mat-label>Ciljna grupa</mat-label>
-        <mat-select [(ngModel)]="selectedTargetGroup" (ngModelChange)="filter()">
-            <mat-option value="">Sve grupe</mat-option>
-            <mat-option value="svi">Svi</mat-option>
-            <mat-option value="dečak">Dečak</mat-option>
-            <mat-option value="devojčica">Devojčica</mat-option>
-        </mat-select>
-    </mat-form-field>
-</div>
+<mat-card class="filter-card">
+    <mat-card-content>
+        <div class="search-wrapper">
+            <mat-form-field>
+                <mat-label>Pretraga</mat-label>
+                <input matInput type="text" [(ngModel)]="search" (keyup)="filter()">
+            </mat-form-field>
+            <mat-form-field>
+                <mat-label>Tip igračke</mat-label>
+                <mat-select [(ngModel)]="selectedType" (ngModelChange)="filter()">
+                    <mat-option value="">Svi tipovi</mat-option>
+                    @for (type of toyTypes(); track type.typeId) {
+                    <mat-option [value]="type.name">{{type.name}}</mat-option>
+                    }
+                </mat-select>
+            </mat-form-field>
+            <mat-form-field>
+                <mat-label>Uzrasna grupa</mat-label>
+                <mat-select [(ngModel)]="selectedAgeGroup" (ngModelChange)="filter()">
+                    <mat-option value="">Sve uzrasne grupe</mat-option>
+                    @for (ag of ageGroups(); track ag.ageGroupId) {
+                    <mat-option [value]="ag.name">{{ag.name}}</mat-option>
+                    }
+                </mat-select>
+            </mat-form-field>
+            <mat-form-field>
+                <mat-label>Ciljna grupa</mat-label>
+                <mat-select [(ngModel)]="selectedTargetGroup" (ngModelChange)="filter()">
+                    <mat-option value="">Sve grupe</mat-option>
+                    <mat-option value="svi">Svi</mat-option>
+                    <mat-option value="dečak">Dečak</mat-option>
+                    <mat-option value="devojčica">Devojčica</mat-option>
+                </mat-select>
+            </mat-form-field>
+            <mat-form-field>
+                <mat-label>Minimalna ocena</mat-label>
+                <mat-select [(ngModel)]="minRating" (ngModelChange)="filter()">
+                    <mat-option [value]="null">Sve ocene</mat-option>
+                    <mat-option [value]="1">★ i više</mat-option>
+                    <mat-option [value]="2">★★ i više</mat-option>
+                    <mat-option [value]="3">★★★ i više</mat-option>
+                    <mat-option [value]="4">★★★★ i više</mat-option>
+                    <mat-option [value]="5">★★★★★</mat-option>
+                </mat-select>
+            </mat-form-field>
+            <mat-form-field>
+                <mat-label>Min cena (RSD)</mat-label>
+                <input matInput type="number" [(ngModel)]="minPrice" (ngModelChange)="filter()">
+            </mat-form-field>
+            <mat-form-field>
+                <mat-label>Max cena (RSD)</mat-label>
+                <input matInput type="number" [(ngModel)]="maxPrice" (ngModelChange)="filter()">
+            </mat-form-field>
+            <mat-form-field>
+                <mat-label>Datum od</mat-label>
+                <input matInput type="date" [(ngModel)]="minDate" (ngModelChange)="filter()">
+            </mat-form-field>
+            <mat-form-field>
+                <mat-label>Datum do</mat-label>
+                <input matInput type="date" [(ngModel)]="maxDate" (ngModelChange)="filter()">
+            </mat-form-field>
+        </div>
+    </mat-card-content>
+</mat-card>
 <div class="card-wrapper">
     @for (t of filteredToys(); track t.toyId) {
     <mat-card class="toy-card" appearance="outlined">

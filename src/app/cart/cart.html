@@ -35,6 +35,9 @@
                         <a [routerLink]="'/details/' + item.toyId" matButton>
                             <mat-icon fontIcon="storefront" /> Stranica
                         </a>
+                        <button type="button" matButton (click)="editCartItem(item)">
+                            <mat-icon fontIcon="edit" /> Izmeni
+                        </button>
                         <button type="button" matButton (click)="removeFromCart(item)">
                             <mat-icon fontIcon="delete" /> Ukloni
                         </button>
@@ -109,6 +112,9 @@
                         @if(item.rating == null) {
                         <button type="button" matButton (click)="rateItem(item)">
                             <mat-icon fontIcon="star" /> Oceni
+                        </button>
+                        <button type="button" matButton (click)="deletePristiglo(item)">
+                            <mat-icon fontIcon="delete" /> Obriši
                         </button>
                         }
                     </td>

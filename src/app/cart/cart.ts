@@ -110,6 +110,15 @@ export class Cart {
     `)
   }
 
+  editCartItem(item: CartItemModel) {
+    const toy = this.getToy(item.toyId)
+    if (!toy) return
+    Alerts.editCartItem(toy.name, item.quantity, toy.price, (quantity, totalPrice) => {
+      AuthService.updateCartItem(item.createdAt, item.toyId, quantity, totalPrice)
+      this.reloadComponent()
+    })
+  }
+
   rateItem(item: CartItemModel) {
     const toy = this.getToy(item.toyId)
     if (!toy) return
@@ -122,6 +131,13 @@ export class Cart {
   removeFromCart(item: CartItemModel) {
     Alerts.confirm('Da li ste sigurni da želite da uklonite igračku iz korpe?', () => {
       AuthService.removeFromActiveCart(item.createdAt, item.toyId)
+      this.reloadComponent()
+    })
+  }
+
+  deletePristiglo(item: CartItemModel) {
+    Alerts.confirm('Da li ste sigurni da želite da obrišete ovu stavku?', () => {
+      AuthService.deletePristigloItem(item.createdAt, item.toyId)
       this.reloadComponent()
     })
   }

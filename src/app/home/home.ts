@@ -13,13 +13,12 @@ import { FormsModule } from '@angular/forms';
 import { MatSelectModule } from '@angular/material/select';
 import { AgeGroupModel, ToyTypeModel } from '../../models/toy.model';
 
-
 @Component({
   selector: 'app-home',
   imports: [
-    RouterLink, 
-    MatButtonModule, 
-    MatCardModule, 
+    RouterLink,
+    MatButtonModule,
+    MatCardModule,
     MatIconModule,
     Loading,
     MatInputModule,
@@ -34,6 +33,11 @@ export class Home {
   selectedType = ''
   selectedAgeGroup = ''
   selectedTargetGroup = ''
+  minPrice: number | null = null
+  maxPrice: number | null = null
+  minDate = ''
+  maxDate = ''
+  minRating: number | null = null
   public authService = AuthService
   toys = signal<ToyModel[]>([])
   filteredToys = signal<ToyModel[]>([])
@@ -48,11 +52,17 @@ export class Home {
         this.filteredToys.set(sorted)
       })
 
-      ToyService.getToyTypes()
-        .then(rsp => this.toyTypes.set(rsp.data))
+    ToyService.getToyTypes()
+      .then(rsp => this.toyTypes.set(rsp.data))
 
-      ToyService.getAgeGroups()
-        .then(rsp => this.ageGroups.set(rsp.data))
+    ToyService.getAgeGroups()
+      .then(rsp => this.ageGroups.set(rsp.data))
+  }
+
+  getAverageRating(toy: ToyModel): number {
+    const reviews = AuthService.getReviewsForToy(toy.toyId)
+    if (reviews.length === 0) return 0
+    return reviews.reduce((sum, r) => sum + r.rating, 0) / reviews.length
   }
 
   filter() {
@@ -75,7 +85,27 @@ export class Home {
         if (this.selectedTargetGroup == '') return true
         return t.targetGroup == this.selectedTargetGroup
       })
+      .filter(t => {
+        if (this.minPrice === null) return true
+        return t.price >= this.minPrice
+      })
+      .filter(t => {
+        if (this.maxPrice === null) return true
+        return t.price <= this.maxPrice
+      })
+      .filter(t => {
+        if (this.minDate == '') return true
+        return new Date(t.productionDate) >= new Date(this.minDate)
+      })
+      .filter(t => {
+        if (this.maxDate == '') return true
+        return new Date(t.productionDate) <= new Date(this.maxDate)
+      })
+      .filter(t => {
+        if (this.minRating === null) return true
+        return this.getAverageRating(t) >= this.minRating
+      })
 
-      this.filteredToys.set(filtered)
+    this.filteredToys.set(filtered)
   }
 }

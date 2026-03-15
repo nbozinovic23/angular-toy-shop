@@ -23,20 +23,49 @@
     margin-top: 10px;
 }
 
-.search-wrapper {
-    display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
-    gap: 10px;
+.filter-card {
+    margin-bottom: 16px;
 }
 
-mat-form-field {
-    width: 300px;
+.filter-card mat-card-content {
+    padding-bottom: 0 !important;
+}
+
+.search-wrapper {
+    display: grid;
+    grid-template-columns: repeat(9, 1fr);
+    gap: 8px;
+    align-items: center;
+}
+
+.search-wrapper mat-form-field {
+    width: 100%;
+    font-size: 13px;
+}
+
+.search-wrapper mat-form-field .mat-mdc-text-field-wrapper {
+    padding: 0 8px;
+}
+
+::ng-deep .search-wrapper mat-form-field .mat-mdc-form-field-subscript-wrapper {
+    display: none;
+}
+
+@media screen and (max-width: 1200px) {
+    .search-wrapper {
+        grid-template-columns: repeat(5, 1fr);
+    }
+}
+
+@media screen and (max-width: 1024px) {
+    .search-wrapper {
+        grid-template-columns: repeat(3, 1fr);
+    }
 }
 
 @media screen and (max-width: 640px) {
     .search-wrapper {
-        gap: 0px;
+        grid-template-columns: repeat(2, 1fr);
     }
 
     .toy-card {

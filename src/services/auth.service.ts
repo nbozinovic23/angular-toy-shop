@@ -126,6 +126,31 @@ export class AuthService {
         return []
     }
 
+    static updateCartItem(createdAt: string, toyId: number, quantity: number, totalPrice: number) {
+        const users = this.getUsers()
+        for (let u of users) {
+            if (u.email === localStorage.getItem(ACTIVE)) {
+                for (let i of u.cart) {
+                    if (i.orderId === null && i.createdAt === createdAt && i.toyId === toyId) {
+                        i.quantity = quantity
+                        i.totalPrice = totalPrice
+                    }
+                }
+            }
+        }
+        localStorage.setItem(USERS, JSON.stringify(users))
+    }
+
+    static deletePristigloItem(createdAt: string, toyId: number) {
+        const users = this.getUsers()
+        for (let u of users) {
+            if (u.email === localStorage.getItem(ACTIVE)) {
+                u.cart = u.cart.filter(i => !(i.status === 'pristiglo' && i.createdAt === createdAt && i.toyId === toyId))
+            }
+        }
+        localStorage.setItem(USERS, JSON.stringify(users))
+    }
+
     static getOrderGroups(): Map<string, CartItemModel[]> {
         const items = this.getCartByStatus('pristiglo')
         const groups = new Map<string, CartItemModel[]>()
