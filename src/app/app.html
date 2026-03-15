@@ -7,24 +7,24 @@
   <!-- Desktop Navigation -->
   <div class="desktop-nav">
     <a routerLink="/" matButton>
-      <mat-icon fontIcon="home" /> Home
+        <mat-icon fontIcon="home" /> Početna
     </a>
     <a routerLink="/about" matButton>
-      <mat-icon fontIcon="info" /> About
+        <mat-icon fontIcon="info" /> O nama
     </a>
     @if(authService.getActiveUser()) {
     <a routerLink="/cart" matButton>
-      <mat-icon fontIcon="shopping_cart" /> Korpa
+        <mat-icon fontIcon="shopping_cart" /> Korpa
     </a>
     <a routerLink="/user" matButton>
-      <mat-icon fontIcon="admin_panel_settings" /> Account
+        <mat-icon fontIcon="admin_panel_settings" /> Nalog
     </a>
     <button matButton (click)="doLogout()">
-      <mat-icon fontIcon="logout" /> Logout
+        <mat-icon fontIcon="logout" /> Odjava
     </button>
     } @else {
     <a routerLink="/login" matButton>
-      <mat-icon fontIcon="login" /> Login
+        <mat-icon fontIcon="login" /> Prijava
     </a>
     }
   </div>
@@ -36,24 +36,24 @@
     </button>
     <mat-menu #menu="matMenu">
       <a routerLink="/" mat-menu-item>
-        <mat-icon fontIcon="home" /> Home
+        <mat-icon fontIcon="home" /> Početna
       </a>
       <a routerLink="/about" mat-menu-item>
-        <mat-icon fontIcon="info" /> About
+        <mat-icon fontIcon="info" /> O nama
       </a>
       @if(authService.getActiveUser()) {
       <a routerLink="/cart" mat-menu-item>
         <mat-icon fontIcon="shopping_cart" /> Korpa
       </a>
       <a routerLink="/user" mat-menu-item>
-        <mat-icon fontIcon="admin_panel_settings" /> Account
+        <mat-icon fontIcon="admin_panel_settings" /> Nalog
       </a>
       <button mat-menu-item (click)="doLogout()">
-        <mat-icon fontIcon="logout" /> Logout
+        <mat-icon fontIcon="logout" /> Odjava
       </button>
       } @else {
       <a routerLink="/login" mat-menu-item>
-        <mat-icon fontIcon="login" /> Login
+        <mat-icon fontIcon="login" /> Prijava
       </a>
       }
     </mat-menu>

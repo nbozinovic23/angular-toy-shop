@@ -17,6 +17,12 @@
 
 .toy-card mat-card-actions {
     margin-top: auto;
+    justify-content: center;
+}
+
+.toy-card mat-card-title,
+.toy-card mat-card-subtitle {
+    text-align: center;
 }
 
 .card-content {
@@ -43,10 +49,6 @@
     font-size: 13px;
 }
 
-.search-wrapper mat-form-field .mat-mdc-text-field-wrapper {
-    padding: 0 8px;
-}
-
 ::ng-deep .search-wrapper mat-form-field .mat-mdc-form-field-subscript-wrapper {
     display: none;
 }
@@ -70,5 +72,62 @@
 
     .toy-card {
         width: 300px;
+    }
+}
+
+.hero {
+    background-image: url('https://images.unsplash.com/photo-1596461404969-9ae70f2830c1?w=1600');
+    background-size: cover;
+    background-position: center;
+    height: 320px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 16px;
+    border-radius: 12px;
+    position: relative;
+    overflow: hidden;
+}
+
+.hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.45);
+    border-radius: 12px;
+}
+
+.hero-content {
+    position: relative;
+    text-align: center;
+    color: white;
+    padding: 0 24px;
+}
+
+.hero-content h1 {
+    font-size: 2.2rem;
+    font-weight: 700;
+    margin: 0 0 12px 0;
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+}
+
+.hero-content p {
+    font-size: 1.1rem;
+    margin: 0;
+    opacity: 0.9;
+    text-shadow: 0 1px 4px rgba(0, 0, 0, 0.4);
+}
+
+@media screen and (max-width: 640px) {
+    .hero {
+        height: 200px;
+    }
+
+    .hero-content h1 {
+        font-size: 1.5rem;
+    }
+
+    .hero-content p {
+        font-size: 0.9rem;
     }
 }
