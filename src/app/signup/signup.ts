@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 import { MatCardModule } from '@angular/material/card';
@@ -6,9 +6,12 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
+import { MatSelectModule } from '@angular/material/select';
 import { FormsModule } from '@angular/forms';
 import { Alerts } from '../alerts';
 import { UserModel } from '../../models/user.model';
+import { ToyService } from '../../services/toy.service';
+import { ToyTypeModel } from '../../models/toy.model';
 
 @Component({
   selector: 'app-signup',
@@ -18,6 +21,7 @@ import { UserModel } from '../../models/user.model';
     MatInputModule,
     MatButtonModule,
     MatIconModule,
+    MatSelectModule,
     FormsModule,
     RouterLink
   ],
@@ -25,17 +29,28 @@ import { UserModel } from '../../models/user.model';
   styleUrl: './signup.css',
 })
 export class Signup {
-  user: Partial<UserModel> = {}
+  user: Partial<UserModel> = {
+    favoriteToyTypes: []
+  }
   password2 = ''
+  toyTypes = signal<ToyTypeModel[]>([])
 
   constructor(private router: Router) {
     if (AuthService.getActiveUser()) {
       router.navigate(['/'])
     }
+
+    ToyService.getToyTypes()
+      .then(rsp => this.toyTypes.set(rsp.data))
   }
 
   doSignup() {
     if (!this.user.firstName || !this.user.lastName || !this.user.email || !this.user.password) {
+      Alerts.error('Sva obavezna polja moraju biti popunjena')
+      return
+    }
+
+    if (!this.user.phone || !this.user.address) {
       Alerts.error('Sva obavezna polja moraju biti popunjena')
       return
     }
@@ -58,6 +73,5 @@ export class Signup {
     AuthService.createUser(this.user)
     Alerts.success('Registracija uspešna')
     this.router.navigate(['/login'])
-
   }
 }
