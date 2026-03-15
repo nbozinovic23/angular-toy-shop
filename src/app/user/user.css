@@ -26,3 +26,16 @@
 .flex-card mat-card-actions {
     margin-top: auto;
 }
+
+.user-layout {
+    align-items: stretch;
+}
+
+.recommended-card {
+    overflow-y: auto;
+}
+
+.recommended-card mat-card-content {
+    overflow-y: auto;
+    max-height: 350px;
+}
